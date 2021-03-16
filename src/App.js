@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
 
-    if(auth.authenticate){
+    if(!auth.authenticate){
       dispatch(isUserLoggedIn());
     }
 
@@ -23,7 +23,7 @@ function App() {
 
   useEffect(() => {
     dispatch(updateCart());
-  }, []);
+  }, [auth.authenticate]);
 
   return (
     <div className="App">
