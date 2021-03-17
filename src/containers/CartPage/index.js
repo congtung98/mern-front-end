@@ -6,6 +6,7 @@ import CartItem from './CartItem';
 import { addToCart, getCartItems } from '../../redux/actions';
 
 import './style.css';
+import { MaterialButton } from '../../components/MaterialUI';
 
 const CartPage = (props) => {
 
@@ -42,6 +43,7 @@ const CartPage = (props) => {
                 <Card
                     headerLeft={`My Cart`}
                     headerRight={<div>Deliver to</div>}
+                    style={{ width: 'calc(100% - 400px', overflow: 'hidden'}}
                 >
                     {
                         Object.keys(cartItems).map((key, index) => 
@@ -53,12 +55,28 @@ const CartPage = (props) => {
                             />
                         )
                     }
+
+                    <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        background: '#fff',
+                        justifyContent: 'flex-end',
+                        boxShadow: '0 0 10px 10px #eee',
+                        boxSizing: 'border-box'
+                    }}>
+                        <div style={{ width: '250px' }}>
+                            <MaterialButton
+                                title="PLACE ORDER" 
+                                onClick={() => props.history.push('/checkout')}
+                            />
+                        </div>
+                    </div>
                     
                 </Card>
                 <Card 
                     headerLeft='Price'
                     style={{
-                        width: '500px'
+                        width: '380px'
                     }}
                 >
                     
