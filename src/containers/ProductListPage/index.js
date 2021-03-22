@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '../../components/Layout';
 import getQueryParams from '../../utils/getQueryParams';
+import ClothingAndAccessories from './ClothingAndAccessories';
 import ProductPage from './ProductPage';
 import ProductStore from './ProductStore';
 import './style.css';
@@ -19,7 +20,7 @@ const ProductListPage = (props) => {
                 content = <ProductPage {...props} />
                 break;
             default:
-                content = null;
+                content = <ClothingAndAccessories {...props} />;
         }
 
         return content;
