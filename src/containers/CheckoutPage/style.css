@@ -28,6 +28,9 @@
 .checkoutHeader.active .stepNumber{
     background: #fff;
 }
+.stepNumber{
+    cursor: pointer;
+}
 .stepTitle{
     display: inline-block;
     font-size: 14px;

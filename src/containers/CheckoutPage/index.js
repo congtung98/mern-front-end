@@ -14,7 +14,7 @@ const CheckoutStep = (props) => {
         <div className="checkoutStep">
             <div className={`checkoutHeader ${props.active && 'active'}`}>
                 <div>
-                    <span className="stepNumber">{props.stepNumber}</span>
+                    <span onClick={props.onClick} className="stepNumber">{props.stepNumber}</span>
                     <span className="stepTitle">{props.title}</span>
                 </div>
             </div>
@@ -192,7 +192,7 @@ const CheckoutPage = (props) => {
             edit: false,
         }));
         setAddress(address);
-        user.address.length === 0 && setNewAddress(true);
+        // user.address.length === 0 && setNewAddress(true);
     }, [user.address]);
 
     if(confirmOrder){
@@ -204,7 +204,7 @@ const CheckoutPage = (props) => {
             </Layout>
         );
     }
-
+console.log({newAddress});
     return (
         <Layout>
             <div className="cartContainer" style={{ alignItems: 'flex-start' }}>
@@ -255,7 +255,7 @@ const CheckoutPage = (props) => {
                     {/* AddressForm */}
 
                     {confirmAddress ? null : newAddress ? (
-                        <AddressForm onSubmitForm={onAddressSubmit} onCancel={() => {}}/>
+                        <AddressForm onSubmitForm={onAddressSubmit} onCancel={() => setNewAddress(false)}/>
                     ) : auth.authenticate ? (
                         <CheckoutStep
                           stepNumber={"+"}

@@ -188,7 +188,7 @@ const AddressForm = (props) => {
         <div className="checkoutStep" style={{ background: '#f5faff' }}>
             <div className={`checkoutHeader`}>
                 <div>
-                    <span className="stepNumber">+</span>
+                    <span onClick={props.onCancel} className="stepNumber">+</span>
                     <span className="stepTitle">{'ADD NEW ADDRESS'}</span>
                 </div>
                 <div style={{

@@ -70,6 +70,16 @@ export default (state = initialState, action) => {
                 orderFetching: false
             }
             break;
+        case userConstants.GET_USER_ORDER_DETAILS_REQUEST:
+            break;
+        case userConstants.GET_USER_ORDER_DETAILS_SUCCESS:
+            state = {
+                ...state,
+                orderDetails: action.payload.order,
+            };
+            break;
+        case userConstants.GET_USER_ORDER_DETAILS_FAILURE:
+            break;
     }
     return state;
 }

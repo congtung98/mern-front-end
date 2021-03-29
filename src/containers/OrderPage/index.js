@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Layout from '../../components/Layout';
 import { Breed } from '../../components/MaterialUI';
 import Card from '../../components/UI/Card';
@@ -32,7 +33,10 @@ const OrderPage = (prosp) => {
                     user.orders.map(order => {
                         return order.items.map(item => (
                             <Card style={{ margin: "5px auto" }}>
-                                <div className="orderItemContainer">
+                                <Link
+                                    to={`/order_details/${order._id}`} 
+                                    className="orderItemContainer"
+                                >
                                     <div className="orderImgContainer">
                                         <img
                                             className="orderImg"
@@ -45,7 +49,7 @@ const OrderPage = (prosp) => {
                                         <div className="orderPrice"><u>đ</u>{item.payablePrice}</div>
                                         <div>{order.paymentStatus}</div>
                                     </div>
-                                </div>
+                                </Link>
                             </Card>
                         ));
                     })
