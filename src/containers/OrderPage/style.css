@@ -3,6 +3,8 @@
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
+    text-decoration: none;
+    color: black;
 }
 .orderImgContainer{
     width: 80;
