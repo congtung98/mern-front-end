@@ -22,7 +22,7 @@ const ClothingAndAccessories = (props) => {
                 style={{
                     boxSizing: "border-box",
                     padding: "10px",
-                    display: "flexx"
+                    display: "flex"
                 }}
             >
                 {product.products.map((product) => (
