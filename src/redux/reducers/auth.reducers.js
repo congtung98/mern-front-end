@@ -12,7 +12,8 @@ const initialState = {
    authenticating: false,
    loading: false,
    error: null,
-   message: ''
+   message: '',
+   loginModal: false
 };
 
 export default (state = initialState, action) => {
@@ -23,7 +24,8 @@ export default (state = initialState, action) => {
         case authConstants.LOGIN_REQUEST:
             state = {
                 ...state,
-                authenticating: true
+                authenticating: true,
+                error: null
             }
             break;
         case authConstants.LOGIN_SUCCESS:
@@ -32,7 +34,15 @@ export default (state = initialState, action) => {
                 user: action.payload.user,
                 token: action.payload.token,
                 authenticate: true,
-                authenticating: false
+                authenticating: false,
+                error: null
+            }
+            break;
+        case authConstants.LOGIN_FAILURE:
+            state = {
+                ...state,
+                authenticating: false,
+                error: action.payload?.error,
             }
             break;
         case authConstants.LOGOUT_REQUEST:
@@ -51,6 +61,12 @@ export default (state = initialState, action) => {
                 ...state,
                 error: action.payload.error,
                 loading: false
+            }
+            break;
+        case authConstants.IS_LOGGED:
+            state = {
+                ...state,
+                loginModal: action.payload
             }
             break;
     }

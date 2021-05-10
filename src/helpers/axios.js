@@ -31,7 +31,8 @@ axiosInstance.interceptors.response.use(
             localStorage.clear();
             store.dispatch({ type: authConstants.LOGOUT_SUCCESS });
         }
-        return Promise.reject(error);
+        // return Promise.reject(error);
+        return error.response;
     }    
 );
 

@@ -135,6 +135,7 @@ const AddressForm = (props) => {
                     <div style={inputContainer}>
                         <MaterialInput
                             label="Landmark (optional)"
+                            optional={true}
                             value={landmark}
                             onChange={(e) => setLandmark(e.target.value)}
                         />
@@ -142,6 +143,7 @@ const AddressForm = (props) => {
                     <div style={inputContainer}>
                         <MaterialInput
                             label="Alternate Phone (Optional)"
+                            optional={true}
                             value={alternatePhone}
                             onChange={(e) => setAlternatePhone(e.target.value)}
                         />
@@ -151,7 +153,8 @@ const AddressForm = (props) => {
                     <label>Address Type</label>
                     <div className="flexRow">
                         <div>
-                            <input type="radio" 
+                            <input type="radio"
+                            checked={addressType === 'home'}
                             onClick={() => setAddressType('home')} 
                             name="addressType"
                             value="home"/>
@@ -159,6 +162,7 @@ const AddressForm = (props) => {
                         </div>
                         <div>
                             <input type="radio"
+                            checked={addressType === 'work'}
                             onClick={() => setAddressType('work')}
                             name="addressType"
                             value="work"/>

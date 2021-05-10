@@ -63,6 +63,25 @@ export default (state = initialState, action) => {
                 error: action.payload.error
             }
             break;
+        case productConstants.RATE_PRODUCT_DETAILS_BY_ID_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case productConstants.RATE_PRODUCT_DETAILS_BY_ID_SUCCESS:
+            state = {
+                ...state,
+                loading: false
+            }
+            break;
+        case productConstants.RATE_PRODUCT_DETAILS_BY_ID_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;
     }
     return state;
 }

@@ -235,7 +235,7 @@ console.log({newAddress});
                         body={
                             <>
                                 {confirmAddress ? (
-                                    <div className="stepCompleted">{`${selectAddress.name} ${selectedAddress.address} - ${selectedAddress.pinCode}`}</div>
+                                    <div className="stepCompleted">{`${selectedAddress.name} ${selectedAddress.address} - ${selectedAddress.pinCode}`}</div>
                                 ) : (
                                     address.map(adr =>
                                         <Address

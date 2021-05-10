@@ -62,3 +62,31 @@ export const getProductDetailsById = (payload) => {
         }
     }
 }
+
+export const ratingProduct = (payload) => {
+    const _id = payload.get('_id');
+
+    return async dispatch => {
+        let res;
+        dispatch({ type: productConstants.RATE_PRODUCT_DETAILS_BY_ID_REQUEST });
+        try {
+            res = await axios.post(`/product/rating`, payload);
+            dispatch({
+                type: productConstants.RATE_PRODUCT_DETAILS_BY_ID_SUCCESS
+            });
+
+            const prodId = {
+                params: {
+                  productId: _id
+                }
+              }
+            dispatch(getProductDetailsById(prodId))
+        }catch(error){
+            console.log(error);
+            dispatch({
+                type: productConstants.RATE_PRODUCT_DETAILS_BY_ID_FAILURE,
+                payload: { error: res.data.error || res.data.message }
+            })
+        }
+    }
+}

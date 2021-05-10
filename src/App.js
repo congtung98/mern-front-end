@@ -4,7 +4,7 @@ import HomePage from './containers/HomePage';
 import ProductListPage from './containers/ProductListPage';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { isUserLoggedIn, updateCart } from './redux/actions';
+import { getOrders, isUserLoggedIn, updateCart } from './redux/actions';
 import ProductDetailsPage from './containers/ProductDetailsPage';
 import CartPage from './containers/CartPage';
 import CheckoutPage from './containers/CheckoutPage';
@@ -20,6 +20,8 @@ function App() {
 
     if(!auth.authenticate){
       dispatch(isUserLoggedIn());
+    }else{
+      dispatch(getOrders());
     }
 
   }, [auth.authenticate]);

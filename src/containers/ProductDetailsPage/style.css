@@ -1,7 +1,10 @@
 .productDescriptionContainer{
     display: flex;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 10px 0 10px 10px;
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
 }
 .verticalImageStack{
     width: 67px;
@@ -45,6 +48,7 @@
     align-items: center;
 }
 .breed ul li{
+    max-width: 200px;
     list-style: none;
     margin-right: 5px;
     display: flex;
@@ -57,6 +61,9 @@
     display: inline-block;
     font-size: 12px;
     margin: 0 10px;
+    overflow: hidden;
+    white-space: nowrap; /* Don't forget this one */
+    text-overflow: ellipsis;
 }
 .productDetails{
     margin: 0 10px;
@@ -96,4 +103,142 @@
     font-weight: 600;
     display: flex;
     align-items: center;
+}
+.productRatingContainer{
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #f0f0f0;
+}
+.ratingHeader{
+    justify-content: space-between;
+}
+.ratingTitle{
+    font-weight: 500;
+    font-size: 24px;
+    padding: 24px 0 0 24px;
+}
+.ratingOverall{
+    font-size: 32px;
+    color: #212121;
+    margin-top: 4px;
+}
+.star{
+    font-size: 32px;
+    padding: 4px 0 0 4px;
+    display: inline-block;
+    color: #212121;
+}
+.ratingBar{
+    height: 5px;
+    border-radius: 100px;
+    position: relative;
+    background: #f0f0f0;
+    margin-top: 7px;
+    margin-left: 7px;
+}
+.ratingProgress{
+    left: 0;
+    position: absolute;
+    height: 5px;
+    border-radius: 100px;
+}
+.liRatingBar{
+    width: 120px;
+    height: 17.5px;
+    padding-top: 1px;
+}
+ul{
+    list-style: none;
+}
+.rateCount{
+    font-size: 12px;
+    color: #878787;
+    padding: 0 5px 0 12px;
+    height: 18px;
+    padding-top: 1px;
+    text-align: left;
+}
+.leftContent{
+    position: sticky;
+    top: 66px;
+    align-self: flex-start;
+}
+.rightContent{
+    width: 100%;
+}
+.reviewModal{
+    width: 605px;
+    background-color: rgb(255, 255, 255);
+    padding: 16px;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+}
+.reviewSuccessModal{
+    background-color: rgb(255, 255, 255);
+    padding: 16px;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+    width: 400px;
+    text-align: center;
+}
+.reviewHeader{
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0px 0px 12px;
+}
+.reviewInput{
+    border: 1px solid rgb(238, 238, 238);
+    padding: 12px;
+    border-radius: 4px;
+    resize: none;
+    width: 100%;
+    outline: 0px;
+    margin: 24px 0px 12px;
+}
+.reviewImage{
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0px 12px 0px 0px;
+    border: 1px solid rgb(224, 224, 224);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+.boxsizingBorder {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.ratingStars{
+    justify-content: center;
+}
+.ratingMessage{
+    margin: 8px 0px 0px;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgb(255, 66, 78);
+    text-align: center;
+}
+.reviewImg{
+    width: 89px;
+    height: 89px;
+    border: 1px solid #f0f0f0;
+    overflow: hidden;
+    text-align: center;
+    border-radius: 2px;
+    background-position: 50% center, 50% center;
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, 20%;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
 }

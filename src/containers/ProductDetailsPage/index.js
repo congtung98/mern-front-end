@@ -1,18 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProductDetailsById } from '../../redux/actions';
+import { checkLoginModal, getProductDetailsById, ratingProduct } from '../../redux/actions';
 import Layout from '../../components/Layout';
 import { 
   IoIosArrowForward, 
   IoIosStar, 
-  IoMdCart 
+  IoMdCart,
+  IoIosCheckmarkCircle, 
+  IoIosCamera
 } from 'react-icons/io';
 import { BiRupee } from 'react-icons/bi';
 import { AiFillThunderbolt } from 'react-icons/ai';
-import { MaterialButton } from '../../components/MaterialUI';
+import ReactStars from "react-rating-stars-component";
+import { MaterialButton, Modal } from '../../components/MaterialUI';
 import './style.css';
 import { generatePublicUrl } from '../../urlConfig';
 import { addToCart } from '../../redux/actions';
+import ReviewItem from './ReviewItem';
 
 
 /**
@@ -22,19 +26,173 @@ import { addToCart } from '../../redux/actions';
 
 const ProductDetailsPage = (props) => {
 
+  const [categoryProd, setCategoryProd] = useState([]);
+  const [reviewVisible, setReviewVisible] = useState(false);
+  const [reviewSuccess, setReviewSuccess] = useState(false);
+  const [reviewError, setReviewError] = useState(false);
+  const [rate, setRate] = useState(0);
+  const [review, setReview] = useState('');
+  const [file, setFile] = useState([]);
+  const [productPictures, setProductPictures] = useState([]);
   const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
   const product = useSelector(state => state.product);
+  const category = useSelector(state => state.category);
+  const rating = useSelector(state => state.product.productDetails.rating);
+  const reviews = useSelector(state => state.product.productDetails.reviews);
+  const orders = useSelector(state => state.user.orders);
 
-  useEffect(() => {
+  const user = window.localStorage.getItem('user');
+  let userId = null;
+  let productOrdered = [];
+  if(user){
+    userId = JSON.parse(user)._id;
+  }
+
+  orders.forEach((order) => {
+    order.items.forEach(item => {
+      productOrdered.push(item.productId._id);
+    })
+  })
+  
+  const userReviewed = reviews?.map((review) => review.userId);
+  
+  useEffect(() => {  
     const { productId } = props.match.params;
-    console.log(props);
     const payload = {
       params: {
         productId
       }
     }
     dispatch(getProductDetailsById(payload));
+    
   }, []);
+
+
+  useEffect(() => {
+    const categoriesProd = [];
+    const { categories } = category;
+    categories.forEach((cat) => {
+      cat.children.forEach((child) => {
+        if(child._id === product.productDetails.category){
+          categoriesProd.push(cat.name);
+          categoriesProd.push(child.name);
+          setCategoryProd(categoriesProd);
+        }else{
+          child.children.forEach((c) => {
+            if(c._id === product.productDetails.category){
+              categoriesProd.push(cat.name);
+              categoriesProd.push(child.name);
+              categoriesProd.push(c.name);
+              setCategoryProd(categoriesProd);
+            }
+          })
+        }
+      })
+    })
+  }, [product.productDetails])
+
+  const sum = ( obj ) => {
+    var sum = 0;
+    for( var el in obj ) {
+      if( obj.hasOwnProperty( el ) ) {
+        sum += parseFloat( obj[el] );
+      }
+    }
+    return sum;
+  }
+
+
+  const ratingOverall = (rating) => {
+    return ((rating[1] + rating[2]*2 + rating[3]*3 + rating[4]*4 + rating[5]*5) / sum(product.productDetails.rating)).toFixed(1);
+  }
+
+  const ratingChanged = (value) => {
+    setRate(value);
+    setReviewError(false);
+  }
+
+  const renderHeader = () => {
+    switch(rate){
+      case 1:
+        return 'Very poor'
+      case 2:
+        return 'Poor'
+      case 3:
+        return 'Neutral'
+      case 4:
+        return 'Pleasure'
+      case 5:
+        return 'Very pleasure'
+      default:
+        return 'Please rate me!'
+    }
+  }
+
+  const renderReviewPlaceholder = () => {
+    switch(rate){
+      case 1:
+        return 'What is your problem?'
+      case 2:
+        return 'What is your problem?'
+      case 3:
+        return 'What is your problem?'
+      case 4:
+        return 'What is your problem?'
+      case 5:
+        return 'Why you like this product?'
+      default:
+        return 'Please sharing your experience about this product'
+    }
+  }
+
+  const handleReview = () => {
+    if(rate !== 0){
+      const { productId } = props.match.params;
+      // const payload = {
+      //   _id: productId,
+      //   rating: rate,
+      //   review: review
+      // }
+      const form = new FormData();
+        form.append('_id', productId);
+        form.append('rating', rate);
+        form.append('review', review);
+
+        for(let pic of productPictures){
+            form.append('productPicture', pic);
+        }
+
+      dispatch(ratingProduct(form));
+      setFile([]);
+      setProductPictures([]);
+      setReviewVisible(false);
+      setReviewSuccess(true);
+    }else{
+      setReviewError(true);
+    }
+  }
+
+  const fileInput = useRef(null);
+
+  const handleFileUpload = event => {
+    setFile([
+      ...file,
+      URL.createObjectURL(event.target.files[0])
+    ]);
+    setProductPictures([
+      ...productPictures,
+      event.target.files[0]
+    ]);
+  };
+
+  const handleDeleteFile = (e) => {
+    const s = productPictures.filter((item, index) => index !== e);
+    const _update = file.filter((item, index) => index !== e);
+    setProductPictures(s);
+    setFile(_update)
+  }
+
 
   if(Object.keys(product.productDetails).length === 0){
     return null;
@@ -42,9 +200,99 @@ const ProductDetailsPage = (props) => {
 
   return (
     <Layout>
-      {/* <div>{product.productDetails.name}</div> */}
+      <Modal
+        style={{ maxWidth: '100%' }} 
+        visible={reviewVisible}
+        onClose={() => {
+          setReviewVisible(false);
+          setRate(0);
+          setReviewError(false);
+        }}
+      >
+        <div className="reviewModal">
+          <div className="reviewHeader">{renderHeader()}</div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <ReactStars
+              count={5}
+              onChange={ratingChanged}
+              size={30}
+              activeColor="#ffd700"
+            />
+          </div>
+            {
+              reviewError ? <div className="ratingMessage">You need to rating before submit!</div> : null
+            }
+          <textarea 
+            className="reviewInput boxsizingBorder" 
+            name="" 
+            id="" 
+            cols="30" 
+            rows="8"
+            onChange={(e) => setReview(e.target.value)}
+            placeholder={renderReviewPlaceholder()}
+          ></textarea>
+          <div className="flexRow">
+            {
+              file.map((img, index) => (
+                <img key={index} className="reviewImage" src={img} onClick={() => handleDeleteFile(index)}/>
+              ))
+            }
+          </div>
+          <div className="flexRow">
+            <input
+              ref={fileInput}
+              onChange={handleFileUpload}
+              type="file"
+              style={{ display: "none" }}
+              // multiple={false}
+            />
+            <MaterialButton 
+              title="Add product pictures"
+              textColor="#0d5cb6"
+              bgColor="#ffffff"
+              border="1px solid rgb(13, 92, 182)"
+              style={{
+                marginRight: '5px'
+              }}
+              icon={<IoIosCamera />}             
+              onClick={() => fileInput.current.click()}
+            />
+            <MaterialButton 
+              title="Submit"
+              bgColor="rgb(253, 216, 53)"
+              textColor="#000000"
+              border="1px solid #fdd835"
+              style={{
+                marginRight: '5px'
+              }}             
+              onClick={() => handleReview()}
+            />
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        visible={reviewSuccess}
+        style={{ maxWidth: '100%' }} 
+      >
+        <div className="reviewSuccessModal">
+          <div className="reviewHeader">Thank you for your review!</div>
+          <div style={{ marginBottom: 50 }}>We will notify you once the review is approved. Your reviews help people shop better</div>
+          <div className="flexRow" style={{ justifyContent: 'center' }}>
+            <MaterialButton 
+              title="OK"
+              bgColor="#0d5cb6"
+              textColor="#fff"
+              style={{
+                width: 120
+              }}      
+              width="120px"       
+              onClick={() => setReviewSuccess(false)}
+            />
+          </div>
+        </div>
+      </Modal>
       <div className="productDescriptionContainer">
-        <div className="flexRow">
+        <div className="flexRow leftContent">
           <div className="verticalImageStack">
             {
               product.productDetails.productPictures.map((thumb, index) => 
@@ -94,14 +342,21 @@ const ProductDetailsPage = (props) => {
             </div>
           </div>
         </div>
-        <div>
+        <div className="rightContent">
 
           {/* home > category > subCategory > productName */}
           <div className="breed">
             <ul>
               <li><a href="#">Home</a><IoIosArrowForward /></li>
-              <li><a href="#">Mobiles</a><IoIosArrowForward /></li>
-              <li><a href="#">Samsung</a><IoIosArrowForward /></li>
+              {
+                categoryProd.map((cat) => {
+                  return (
+                    <li key={cat}><a href="#">{cat}</a><IoIosArrowForward /></li>
+                  )
+                })
+              }
+              {/* <li><a href="#">{parentCategoryProd}</a><IoIosArrowForward /></li>
+              <li><a href="#">{categoryProd}</a><IoIosArrowForward /></li> */}
               <li><a href="#">{product.productDetails.name}</a></li>
             </ul>
           </div>
@@ -138,9 +393,124 @@ const ProductDetailsPage = (props) => {
               }}>{product.productDetails.description}</span>
               </p>
             </div>
+            <div className="productRatingContainer">
+              <div className="flexRow ratingHeader">
+                <div className="ratingTitle">Rating & Reviews</div>
+                <div style={{ padding: '24px 24px 0 24px'}}>
+                  {/* <MaterialButton
+                    title="Rate Product"
+                    bgColor="#ffffff"
+                    textColor="#000000"
+                    fontWeight={500}
+                    style={{
+                      marginRight: '5px'
+                    }}             
+                    onClick={() => auth.authenticate ? setReviewVisible(true) : dispatch(checkLoginModal(true))}
+                  /> */}
+                  {
+                    userReviewed.includes(userId) || !productOrdered.includes(props.match.params.productId) ?
+                    null : 
+                    <MaterialButton
+                      title="Rate Product"
+                      bgColor="#ffffff"
+                      textColor="#000000"
+                      fontWeight={500}
+                      style={{
+                        marginRight: '5px'
+                      }}             
+                      onClick={() => auth.authenticate ? setReviewVisible(true) : dispatch(checkLoginModal(true))}
+                    />
+                  }
+                </div>
+              </div>
+              <div className="flexRow">
+                <div style={{ width: "33.33%", paddingTop: 30 }}>
+                  <div className="flexRow" style={{ paddingLeft: 100 }}>
+                    <div className="ratingOverall">{ isNaN(ratingOverall(product.productDetails.rating)) ? 0 : ratingOverall(product.productDetails.rating)}</div>
+                    <div className="star">
+                      <IoIosStar />
+                    </div>
+                  </div>
+                  <div>
+                    {sum(rating)} & {reviews.length} Reviews
+                  </div>
+                </div>
+                <div className="flexRow">
+                    <ul style={{ paddingLeft: 2 }}>
+                      {
+                        Object.keys(rating).reverse().map((r, i) => (
+                          <li key={i}>
+                            <div>
+                              <span>{r}</span>
+                              <span style={{ fontSize: 14, paddingLeft: 2}}><IoIosStar /></span>
+                            </div>
+                          </li>
+                        ))
+                      }
+                    </ul>
+                    <ul style={{ paddingLeft: 10 }}>
+                      <li className="liRatingBar">
+                        <div>
+                          <div className="ratingBar">
+                            <span className="ratingProgress" style={{ width: `${rating[5]/sum(rating)*100}%`, backgroundColor: '#388e3c'}}></span>
+                          </div>
+                        </div>
+                      </li>
+                      <li className="liRatingBar">
+                        <div>
+                          <div className="ratingBar">
+                            <span className="ratingProgress" style={{ width: `${rating[4]/sum(rating)*100}%`, backgroundColor: '#388e3c'}}></span>
+                          </div>
+                        </div>
+                      </li>
+                      <li className="liRatingBar">
+                        <div>
+                          <div className="ratingBar">
+                            <span className="ratingProgress" style={{ width: `${rating[3]/sum(rating)*100}%`, backgroundColor: '#388e3c'}}></span>
+                          </div>
+                        </div>
+                      </li>
+                      <li className="liRatingBar">
+                        <div>
+                          <div className="ratingBar">
+                            <span className="ratingProgress" style={{ width: `${rating[2]/sum(rating)*100}%`, backgroundColor: '#ff9f00'}}></span>
+                          </div>
+                        </div>
+                      </li>
+                      <li className="liRatingBar">
+                        <div>
+                          <div className="ratingBar">
+                            <span className="ratingProgress" style={{ width: `${rating[1]/sum(rating)*100}%`, backgroundColor: '#ff6161'}}></span>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <ul style={{ paddingLeft: 2 }}>
+                      {
+                        Object.values(rating).reverse().map((r,i) => (
+                          <li key={i} className="rateCount">{r}</li>
+                        ))
+                      }
+                    </ul>
+                </div>
+              </div>
+              <div className="flexRow" style={{ padding: '0 24px 24px'}}>
+                {
+                  reviews.map((review) => (
+                    review.productPictures.map((image, index) => (
+                      <div key={index} className="reviewImg" style={{ backgroundImage: `url(${generatePublicUrl(image.img)})`}}/>
+                    ))
+                  ))
+                }
+              </div>
+            </div>
+            {
+              reviews.map((review) => (                
+                  <ReviewItem review={review} />
+                )
+              )
+            }
           </div>
-          
-
         </div>
       </div>
     </Layout>

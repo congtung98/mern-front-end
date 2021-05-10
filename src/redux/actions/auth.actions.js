@@ -1,4 +1,5 @@
 import axios from "../../helpers/axios";
+import { getCartItems } from "./cart.actions";
 import { authConstants, cartConstants } from "./constants";
 
 // new update signup action
@@ -36,6 +37,7 @@ export const login = (user) => {
             ...user
         });
 
+        console.log(res.status,'status');
         if(res.status === 200){
             const { token, user } = res.data;
             localStorage.setItem('token', token);
@@ -47,6 +49,7 @@ export const login = (user) => {
                     user
                 }
             });
+            dispatch(getCartItems())
         }else{
             if(res.status === 400){
                 dispatch({
@@ -73,7 +76,7 @@ export const isUserLoggedIn = () => {
         }else {
             dispatch({
                 type: authConstants.LOGIN_FAILURE,
-                payload: { error: 'Failed to login' }
+                // payload: { error: 'Failed to login' }
             });
         }
     }
@@ -102,5 +105,11 @@ export const signout = () => {
         //     });
         // }
         
+    }
+}
+
+export const checkLoginModal = (boolean) => {
+    return dispatch => {
+        dispatch({ type: authConstants.IS_LOGGED, payload: boolean })
     }
 }

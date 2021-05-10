@@ -24,9 +24,11 @@
 }
 .modalClose{
     position: absolute;
-    color: #fff;
-    right: 15px;
+    color: rgb(224, 224, 224);
+    cursor: pointer;
+    right: 5px;
     font-size: 20px;
+    z-index: 2;
 }
 
 /* Material Input */
@@ -64,7 +66,9 @@
   /* Material Button */
 .materialButton{
     width: 100%;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 15px;
     font-size: 15px;
     outline: none;

@@ -10,7 +10,7 @@ import {
   DropdownMenu
 } from '../MaterialUI';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCartItems, login, signout, signup as _signup } from '../../redux/actions';
+import { checkLoginModal, getCartItems, login, signout, signup as _signup } from '../../redux/actions';
 import Cart from '../UI/Cart';
 
 /**
@@ -20,16 +20,17 @@ import Cart from '../UI/Cart';
 
 const Header = (props) => {
 
-  const [loginModal, setLoginModal] = useState(false);
   const [signup, setSignup] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
+  console.log(auth.error);
 
   const userSignup = () => {
     const user = { firstName, lastName, email, password };
@@ -50,6 +51,8 @@ const Header = (props) => {
       userSignup();
     }else{
       dispatch(login({ email, password }));
+      setEmail('');
+      setPassword('');
     }
   }
 
@@ -58,11 +61,19 @@ const Header = (props) => {
   }
 
   useEffect(() => {
-
     if(auth.authenticate){
-        setLoginModal(false);
+        dispatch(checkLoginModal(false));
     }
   }, [auth.authenticate]);
+
+  useEffect(() => {
+    setError(auth.error)
+    if(auth.error && !auth.authenticating){
+      setTimeout(() => {
+        setError('');
+      }, 3000)
+    }
+  }, [auth.error, auth.authenticating])
 
   useEffect(() => {
     dispatch(getCartItems());
@@ -72,7 +83,7 @@ const Header = (props) => {
       return (
         <DropdownMenu
             menu={
-            <a className="fullName" onClick={() => setLoginModal(true)}>
+            <a className="fullName">
                 {auth.user.fullName}
             </a>
             }
@@ -106,7 +117,7 @@ const Header = (props) => {
               className="loginButton" 
               onClick={() => {
                 setSignup(false);
-                setLoginModal(true);
+                dispatch(checkLoginModal(true));
               }
             }>
                 Login
@@ -120,7 +131,7 @@ const Header = (props) => {
                 href: `/account/orders`, 
                 icon: null, 
                 onClick: () => {
-                    !auth.authenticate && setLoginModal(true);
+                    !auth.authenticate && dispatch(checkLoginModal(true));
                 } 
             },
             { label: 'Wishlist', href: '', icon: null },
@@ -132,7 +143,7 @@ const Header = (props) => {
                 <span>New Customer?</span>
                 <a
                   onClick={() => {
-                    setLoginModal(true);
+                    dispatch(checkLoginModal(true));
                     setSignup(true);
                   }} 
                   style={{ color: '#2874f0' }}
@@ -149,8 +160,10 @@ const Header = (props) => {
   return (
     <div className="header">
       <Modal 
-        visible={loginModal}
-        onClose={() => setLoginModal(false)}
+        visible={auth.loginModal}
+        onClose={() => {
+          dispatch(checkLoginModal(false))
+        }}
       >
         <div className="authContainer">
           <div className="row">
@@ -193,6 +206,7 @@ const Header = (props) => {
                     //   rightElement={<a href="#">Forgot?</a>}
                     />
 
+                    <p style={{ color: "red", fontWeight: 500, fontSize: 12 }}> {error} </p>
                     <MaterialButton 
                     title={signup ? "Register" : "Login"}
                     bgColor="#fb641b"

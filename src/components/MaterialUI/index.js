@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoIosClose } from 'react-icons/io';
 import './style.css';
 
 const Modal = (props) => {
@@ -9,8 +10,8 @@ const Modal = (props) => {
         <>
             <div className="modalFixedBg">
                 <div style={{ position: 'relative' }}>
-                    <div className="modalClose" onClick={props.onClose}>X</div>
-                    <div className="modalContainer">
+                    <div className="modalClose" style={{ display: props.onClose ? 'block' : 'none' }} onClick={props.onClose}><IoIosClose size={40}/></div>
+                    <div className="modalContainer" style={props.style}>
                         {props.children}
                     </div>
                 </div>
@@ -25,7 +26,7 @@ const MaterialInput = (props) => {
 
     return (
         <div className="materialInput">
-            <label className={`label ${focus ? 'focus' : ''}`} style={{
+            <label className={`label ${focus || props.value ? 'focus' : ''}`} style={{
                 top: 0,
                 lineHeight: 'none'
             }}>{props.label}</label>
@@ -37,8 +38,10 @@ const MaterialInput = (props) => {
                     value={props.value}
                     onChange={props.onChange}
                     onFocus={(e) => {
+                        if(e.target.value === "" && !props.optional){
+                            setTouch(true);
+                        }
                         setFocus(true);
-                        setTouch(true);
                     }}
                     onBlur={(e) => {
                         if(e.target.value === ""){
@@ -81,9 +84,13 @@ const MaterialButton = (props) => {
                 style={{
                     backgroundColor: props.bgColor,
                     color: props.textColor,
+                    fontWeight: props.fontWeight,
+                    border: props.border,
+                    width: props.width
                 }}
                 onClick={onClick}
             >
+                {props.icon && props.icon}
                 {props.title && props.title}
             </button>
         </div>
