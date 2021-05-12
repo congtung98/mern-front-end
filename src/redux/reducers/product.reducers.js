@@ -8,6 +8,7 @@ const initialState = {
     page: {},
     error: null,
     productDetails: {},
+    productVariants: [],
     loading: false
 }
 
@@ -53,7 +54,8 @@ export default (state = initialState, action) => {
             state = {
                 ...state,
                 loading: false,
-                productDetails: action.payload.productDetails
+                productDetails: action.payload.productDetails,
+                productVariants: action.payload.productVariants
             }
             break;
         case productConstants.GET_PRODUCT_DETAILS_BY_ID_FAILURE:

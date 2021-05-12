@@ -101,7 +101,7 @@ const OrderDetailsPage = (props) => {
                                         <div className={`point ${status.isCompleted ? "active" : ""}`}>
                                         </div>
                                         <div className="orderInfo">
-                                            <div className="status">{status.type}</div>
+                                            <div className={`status ${status.isCompleted ? "active" : ""}`}>{status.type}</div>
                                             <div className="date">{formatDate(status.date)}</div>
                                         </div>
                                     </div>

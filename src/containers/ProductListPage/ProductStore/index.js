@@ -45,7 +45,7 @@ const ProductStore = (props) => {
                                 {
                                     product.productsByPrice[key].map(product =>
                                         <Link 
-                                            to={`/${product.slug}/${product._id}/p`}
+                                            to={`/${product.slug}/${product._id}/p/${product.type}`}
                                             style={{
                                                 display: 'block',
                                                 textDecoration: "none",

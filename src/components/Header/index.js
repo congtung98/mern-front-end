@@ -30,7 +30,7 @@ const Header = (props) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
-  console.log(auth.error);
+  // console.log(auth.error);
 
   const userSignup = () => {
     const user = { firstName, lastName, email, password };

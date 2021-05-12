@@ -81,9 +81,13 @@
 }
 
 .orderInfo .status{
-    color: #26A541;
+    color: #777;
     text-transform: capitalize;
     font-weight: bold;
+}
+
+.orderInfo .status.active{
+    color: #26A541;
 }
 
 .orderInfo .date{
