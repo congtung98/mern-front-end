@@ -27,19 +27,32 @@ const CartPage = (props) => {
         }
     }, [auth.authenticate]);
 
-    const onQuantityIncrement = (_id, qty) => {
+    const onQuantityIncrement = (id, qty) => {
         // console.log(_id, qty);
-        const { name, price, img } = cartItems[_id]
-        dispatch(addToCart({ _id, name, price, img }, 1));
+        const { _id, name, price, img, type, variantId } = cartItems[id]
+        if(variantId){
+            console.log(variantId, _id, 'okokok');
+            dispatch(addToCart({ _id, name, price, img, type, variantId }, 1));
+        }else{
+            dispatch(addToCart({ _id, name, price, img }, 1));
+        }
     }
 
-    const onQuantityDecrement = (_id, qty) => {
-        const { name, price, img } = cartItems[_id]
-        dispatch(addToCart({ _id, name, price, img }, -1));
+    const onQuantityDecrement = (id, qty) => {
+        const { _id, name, price, img, type, variantId } = cartItems[id]
+        if(variantId){
+            dispatch(addToCart({ _id, name, price, img, type, variantId }, -1));
+        }else{
+            dispatch(addToCart({ _id, name, price, img }, -1));
+        }
     }
 
-    const onRemoveCartItem = (_id) => {
-        dispatch(removeCartItem({ productId: _id }));
+    const onRemoveCartItem = (_id, variantId) => {
+        if(variantId){
+            dispatch(removeCartItem({ productId: _id, variantId: variantId }));
+        }else{
+            dispatch(removeCartItem({ productId: _id }));
+        }
     };
     
     if(props.onlyCartItems){

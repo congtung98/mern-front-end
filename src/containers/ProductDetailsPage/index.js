@@ -414,11 +414,11 @@ const ProductDetailsPage = (props) => {
                       count++;
                     }
                   });
-                  if(productVariant.length !== 1 && variants.length > 0 || count > keys.length){
+                  if(productVariant.length !== 1 && variants.length > 1 || count > keys.length){
                     setAlertCart(true);
-                  }else if(variants.length > 0){
+                  }else if(productVariant.length === 1){
                     const { _id, name, price, type } = product.productDetails;
-                    const variantId = productVariant[0]._id
+                    const variantId = productVariant[0]._id;
                     const img = product.productDetails.productPictures[0].img;
                     dispatch(addToCart({ _id, name, price, img, type, variantId }));
                     props.history.push(`/cart`);

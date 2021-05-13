@@ -7,19 +7,53 @@ const CartItem = (props) => {
     const [qty, setQty] = useState(props.cartItem.qty);
 
     const {
-        _id, name, price, img
+        _id,
+        variantId, 
+        name, 
+        price, 
+        img, 
+        ram, 
+        storage, 
+        color, 
+        size, 
+        hardDiskCapacity, 
+        primaryColor, 
+        material, 
+        author, 
+        genre, 
+        screenSize
     } = props.cartItem;
 
     const onQuantityIncrement = () => {
         setQty(qty + 1);
-        props.onQuantityInc(_id, qty + 1);
+        if(variantId){
+            props.onQuantityInc(variantId, qty + 1); 
+        }else{
+            props.onQuantityInc(_id, qty + 1);
+        }
     }
 
     const onQuantityDecrement = () => {
         if(qty <= 1) return;
         setQty(qty - 1);
-        props.onQuantityDec(_id, qty - 1); 
+        if(variantId){
+            props.onQuantityDec(variantId, qty - 1); 
+        }else{
+            props.onQuantityDec(_id, qty - 1); 
+        }
     }
+
+    const detailVariant = () => {
+        if(color){
+            if(storage){
+                return ` (${color}, ${storage})`; 
+            }else if(size){
+                return ` (${color}, ${size})`;
+            }
+        }else if(primaryColor){
+            return ` (${primaryColor})`
+    }
+    } 
 
     return (
         <div className="cartItemContainer">
@@ -29,7 +63,12 @@ const CartItem = (props) => {
                 </div>
                 <div className="cartItemDetails">
                     <div>
-                        <p>{name}</p>
+                        <p>
+                            {name}
+                            {detailVariant()}
+                            {ram ? ` (${ram} RAM)` : null}
+                            {screenSize ? ` (${screenSize} inch)` : null}
+                        </p>
                         <p>Rs. {price}</p>
                     </div>
                     <div>Delivery in 3 - 5 days</div>
@@ -49,7 +88,7 @@ const CartItem = (props) => {
                 <button className="cartActionBtn">save for later</button>
                 <button 
                     className="cartActionBtn"
-                    onClick={() => props.onRemoveCartItem(_id)}    
+                    onClick={() => props.onRemoveCartItem(_id, variantId)}    
                 >
                     Remove
                 </button>
