@@ -235,8 +235,18 @@ const ProductDetailsPage = (props) => {
       setKeys([...keys, {key: key, value: v}]);
       if(productVariant.length === 0){
         const _productVariant = variants.filter(prod => prod[key] === v);
-        console.log(_productVariant, 'v');
         setProductVariant(_productVariant);
+        if(_productVariant.length === 1){
+          let objArr = [];
+          Object.keys(variant).forEach(key => {
+            if(variant[key].length > 1){
+              const obj = { key: key, value: _productVariant[0][key] }
+              objArr.push(obj);
+              console.log(obj, 'mck');
+            }
+          })
+          setKeys([...objArr]);
+        }
       }else{
         const _productVariant = productVariant.filter(prod => prod[key] === v);
         if(_productVariant.length === 1){

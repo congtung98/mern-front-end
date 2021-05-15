@@ -162,11 +162,66 @@ const CheckoutPage = (props) => {
             const { price, qty } = cart.cartItems[key];
             return totalPrice + price * qty;
         }, 0);
-        const items = Object.keys(cart.cartItems).map((key) => ({
-            productId: key,
-            payablePrice: cart.cartItems[key].price,
-            purchasedQty: cart.cartItems[key].qty,
-        }));
+        const items = Object.keys(cart.cartItems).map((key) => {
+            if(cart.cartItems[key].variantId){
+                if(cart.cartItems[key].smartphone){
+                    return {
+                        productId: cart.cartItems[key]._id,
+                        payablePrice: cart.cartItems[key].price,
+                        purchasedQty: cart.cartItems[key].qty,
+                        variantProduct: cart.cartItems[key].variantId,
+                        smartphone: cart.cartItems[key].variantId
+                    }
+                }else if(cart.cartItems[key].laptop){
+                    return {
+                        productId: cart.cartItems[key]._id,
+                        payablePrice: cart.cartItems[key].price,
+                        purchasedQty: cart.cartItems[key].qty,
+                        variantProduct: cart.cartItems[key].variantId,
+                        laptop: cart.cartItems[key].variantId
+                    }
+                }else if(cart.cartItems[key].clothing){
+                    return {
+                        productId: cart.cartItems[key]._id,
+                        payablePrice: cart.cartItems[key].price,
+                        purchasedQty: cart.cartItems[key].qty,
+                        variantProduct: cart.cartItems[key].variantId,
+                        clothing: cart.cartItems[key].variantId
+                    }
+                }else if(cart.cartItems[key].television){
+                    return {
+                        productId: cart.cartItems[key]._id,
+                        payablePrice: cart.cartItems[key].price,
+                        purchasedQty: cart.cartItems[key].qty,
+                        variantProduct: cart.cartItems[key].variantId,
+                        television: cart.cartItems[key].variantId
+                    }
+                }else if(cart.cartItems[key].furniture){
+                    return {
+                        productId: cart.cartItems[key]._id,
+                        payablePrice: cart.cartItems[key].price,
+                        purchasedQty: cart.cartItems[key].qty,
+                        variantProduct: cart.cartItems[key].variantId,
+                        furniture: cart.cartItems[key].variantId
+                    }
+                }else if(cart.cartItems[key].book){
+                    return {
+                        productId: cart.cartItems[key]._id,
+                        payablePrice: cart.cartItems[key].price,
+                        purchasedQty: cart.cartItems[key].qty,
+                        variantProduct: cart.cartItems[key].variantId,
+                        book: cart.cartItems[key].variantId
+                    }
+                }
+            }else{
+                return {
+                        productId: key,
+                        payablePrice: cart.cartItems[key].price,
+                        purchasedQty: cart.cartItems[key].qty,
+                }
+            }
+        }
+        );
         const payload = {
             addressId: selectedAddress._id,
             totalAmount,

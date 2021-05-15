@@ -52,6 +52,22 @@ const OrderDetailsPage = (props) => {
         return null;
     }
 
+    const renderProductName = (item) => {
+        if(item.smartphone){
+            return `${item.productId.name} (${item.smartphone.color}, ${item.smartphone.storage}) (${item.smartphone.ram})`
+        }else if(item.laptop){
+            return `${item.productId.name} (${item.laptop.ram}, ${item.smartphone.hardDiskCapacity})`
+        }else if(item.television){
+            return `${item.productId.name} (${item.television.screenSize} inch)`
+        }else if(item.furniture){
+            return `${item.productId.name} (${item.furniture.primaryColor}, ${item.furniture.material})`
+        }else if(item.clothing){
+            return `${item.productId.name} (${item.clothing.color}, ${item.clothing.size})`
+        }else{
+            return item.productId.name;
+        }
+    }
+
     return (
         <Layout>
             <div
@@ -86,7 +102,7 @@ const OrderDetailsPage = (props) => {
                                 <img src={generatePublicUrl(item.productId.productPictures[0].img)} alt=""/>
                             </div>
                             <div style={{ width: "250px" }}>
-                                <div className="delItemName">{item.productId.name}</div>
+                                <div className="delItemName">{renderProductName(item)}</div>
                                 <Price value={item.payablePrice} />
                             </div>
                         </div>
