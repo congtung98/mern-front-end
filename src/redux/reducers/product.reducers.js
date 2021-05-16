@@ -9,6 +9,7 @@ const initialState = {
     error: null,
     productDetails: {},
     productVariants: [],
+    productsSearch: [],
     loading: false
 }
 
@@ -84,6 +85,26 @@ export default (state = initialState, action) => {
                 error: action.payload.error
             }
             break;
+        case productConstants.SEARCH_PRODUCTS_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case productConstants.SEARCH_PRODUCTS_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+                productsSearch: action.payload.products
+            }
+            break;
+        case productConstants.SEARCH_PRODUCTS_FAILURE:
+             state = {
+                 ...state,
+                 loading: false,
+                 error: action.payload.error
+             }
+             break;
     }
     return state;
 }

@@ -38,6 +38,7 @@ function App() {
           <Route path="/cart" component={CartPage} />
           <Route path="/checkout" component={CheckoutPage} />
           <Route path="/account/orders" component={OrderPage} />
+          <Route path="/searchProducts" component={ProductListPage} />
           <Route path="/order_details/:orderId" component={OrderDetailsPage} />
           <Route path="/:productSlug/:productId/p/:type" component={ProductDetailsPage}  />
           <Route path="/:slug" exact component={ProductListPage}  />

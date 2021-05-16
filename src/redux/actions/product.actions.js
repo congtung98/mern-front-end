@@ -48,7 +48,7 @@ export const getProductDetailsById = (payload) => {
         dispatch({ type: productConstants.GET_PRODUCT_DETAILS_BY_ID_REQUEST });
         try {
             const { productId, type } = payload.params;
-            console.log(type, 'TYPE');
+            console.log(productId, type, 'TYPE');
             res = await axios.get(`/product/productDetails/${productId}/${type}`);
             dispatch({
                 type: productConstants.GET_PRODUCT_DETAILS_BY_ID_SUCCESS,
@@ -91,3 +91,23 @@ export const ratingProduct = (payload) => {
         }
     }
 }
+
+export const searchProduct = (payload) => {
+    return async dispatch => {
+        let res;
+        dispatch({ type: productConstants.SEARCH_PRODUCTS_REQUEST});
+        try {
+            res = await axios.post(`/product/search`, payload);
+            dispatch({
+                type: productConstants.SEARCH_PRODUCTS_SUCCESS,
+                payload: { products: res.data.response }
+            });
+        }catch(error){
+            console.log(error);
+            dispatch({
+                type: productConstants.SEARCH_PRODUCTS_FAILURE,
+                payload: { error: res.data.error || res.data.message }
+            })
+        }
+    }
+} 

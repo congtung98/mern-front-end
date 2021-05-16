@@ -426,9 +426,10 @@ const ProductDetailsPage = (props) => {
                   });
                   if(productVariant.length !== 1 && variants.length > 1 || count > keys.length){
                     setAlertCart(true);
-                  }else if(productVariant.length === 1){
+                  }else if(productVariant.length === 1 || variants.length === 1){
+                    console.log(productVariant, variants, 'LOGGGG');
                     const { _id, name, price, type } = product.productDetails;
-                    const variantId = productVariant[0]._id;
+                    const variantId = productVariant[0] ?  productVariant[0]._id : variants[0]._id;
                     const img = product.productDetails.productPictures[0].img;
                     dispatch(addToCart({ _id, name, price, img, type, variantId }));
                     props.history.push(`/cart`);

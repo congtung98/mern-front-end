@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import './style.css';
 import flipkartLogo from '../../images/logo/flipkart.png';
 import goldenStar from '../../images/logo/golden-star.png';
@@ -10,7 +11,7 @@ import {
   DropdownMenu
 } from '../MaterialUI';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkLoginModal, getCartItems, login, signout, signup as _signup } from '../../redux/actions';
+import { checkLoginModal, getCartItems, login, searchProduct, signout, signup as _signup } from '../../redux/actions';
 import Cart from '../UI/Cart';
 
 /**
@@ -26,11 +27,13 @@ const Header = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const cart = useSelector((state) => state.cart);
-  // console.log(auth.error);
+  console.log(props, 'PROPS');
 
   const userSignup = () => {
     const user = { firstName, lastName, email, password };
@@ -156,6 +159,14 @@ const Header = (props) => {
       );
   }
   
+  const handleSearch = (e) => {
+    const payload = { search: search };
+    if(e.key === 'Enter'){
+      console.log('Do search function!', search);
+      history.push('/searchProducts')
+      dispatch(searchProduct(payload));
+    }
+  }
 
   return (
     <div className="header">
@@ -248,6 +259,8 @@ const Header = (props) => {
         }}>
           <div className="searchInputContainer">
             <input
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleSearch}
               className="searchInput"
               placeholder={'search for products, brands and more'}
             />
