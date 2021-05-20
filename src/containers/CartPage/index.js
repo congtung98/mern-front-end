@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../../components/Layout';
 import Card from '../../components/UI/Card';
 import CartItem from './CartItem';
-import { addToCart, getCartItems, removeCartItem } from '../../redux/actions';
+import { addToCart, checkLoginModal, getCartItems, removeCartItem } from '../../redux/actions';
 
 import './style.css';
 import { MaterialButton } from '../../components/MaterialUI';
@@ -103,7 +103,7 @@ const CartPage = (props) => {
                         <div style={{ width: '250px' }}>
                             <MaterialButton
                                 title="PLACE ORDER" 
-                                onClick={() => props.history.push('/checkout')}
+                                onClick={() => auth.authenticate ? props.history.push('/checkout') : dispatch(checkLoginModal(true))}
                             />
                         </div>
                     </div>

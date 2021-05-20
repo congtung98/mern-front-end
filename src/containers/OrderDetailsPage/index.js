@@ -56,7 +56,7 @@ const OrderDetailsPage = (props) => {
         if(item.smartphone){
             return `${item.productId.name} (${item.smartphone.color}, ${item.smartphone.storage}) (${item.smartphone.ram})`
         }else if(item.laptop){
-            return `${item.productId.name} (${item.laptop.ram}, ${item.smartphone.hardDiskCapacity})`
+            return `${item.productId.name} (${item.laptop.ram}, ${item.laptop.hardDiskCapacity})`
         }else if(item.television){
             return `${item.productId.name} (${item.television.screenSize} inch)`
         }else if(item.furniture){

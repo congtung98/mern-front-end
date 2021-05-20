@@ -242,7 +242,7 @@ const ProductDetailsPage = (props) => {
             if(variant[key].length > 1){
               const obj = { key: key, value: _productVariant[0][key] }
               objArr.push(obj);
-              console.log(obj, 'mck');
+              // console.log(obj, 'mck');
             }
           })
           setKeys([...objArr]);
@@ -255,7 +255,7 @@ const ProductDetailsPage = (props) => {
             if(variant[key].length > 1){
               const obj = { key: key, value: _productVariant[0][key] }
               objArr.push(obj);
-              console.log(obj, 'mck');
+              // console.log(obj, 'mck');
             }
           })
           setKeys([...objArr]);
@@ -265,7 +265,11 @@ const ProductDetailsPage = (props) => {
     }
   }
 
-  console.log(productVariant, keys, 'mck');
+  // console.log(productVariant, keys, 'mck');
+
+  const calculateOffer = (price, offer) => {
+    return price*offer/100;
+  }
 
   if(Object.keys(product.productDetails).length === 0){
     return null;
@@ -478,10 +482,11 @@ const ProductDetailsPage = (props) => {
               <span className="ratingCount">{isNaN(ratingOverall(product.productDetails.rating)) ? 0 : ratingOverall(product.productDetails.rating)}<IoIosStar /></span>
               <span className="ratingNumbersReviews">{sum(rating)} Ratings & {reviews.length} Reviews</span>
             </div>
-            <div className="extraOffer">Extra <BiRupee />4500 off </div>
+            <div className="extraOffer">Extra {calculateOffer(product.productDetails.price, product.productDetails.offer)}đ off </div>
             <div className="flexRow priceContainer">
-              <span className="price"><u>đ</u>{product.productDetails.price}</span>
-              <span className="discount" style={{ margin: '0 10px' }}>22% off</span>
+              <span className="price"><u>đ</u>{product.productDetails.offer ? product.productDetails.price - calculateOffer(product.productDetails.price, product.productDetails.offer) : product.productDetails.price}</span>
+              {product.productDetails.offer ? <span className="originPrice">đ{product.productDetails.price}</span> : null}
+              <span className="discount" style={{ margin: '0 10px' }}>{product.productDetails.offer}% off</span>
               {/* <span>i</span> */}
               </div>
             <div>

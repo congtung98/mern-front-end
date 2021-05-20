@@ -19,6 +19,20 @@ const ProductStore = (props) => {
         dispatch(getProductsBySlug(match.params.slug));
     }, []);
 
+    const sum = ( obj ) => {
+        var sum = 0;
+        for( var el in obj ) {
+          if( obj.hasOwnProperty( el ) ) {
+            sum += parseFloat( obj[el] );
+          }
+        }
+        return sum;
+    }
+
+    const ratingOverall = (key, index, rating) => {
+        return ((rating[1] + rating[2]*2 + rating[3]*3 + rating[4]*4 + rating[5]*5) / sum(product.productsByPrice[key][index].rating)).toFixed(1);
+      }
+
     return (
         <>
             {
@@ -43,7 +57,7 @@ const ProductStore = (props) => {
                         >
                             <div style={{ display: 'flex' }}>
                                 {
-                                    product.productsByPrice[key].map(product =>
+                                    product.productsByPrice[key].map((product, index) =>
                                         <Link 
                                             to={`/${product.slug}/${product._id}/p/${product.type}`}
                                             style={{
@@ -59,7 +73,7 @@ const ProductStore = (props) => {
                                             <div className="productInfo">
                                                 <div style={{ margin: '10px 0' }}>{product.name}</div>
                                                 <div>
-                                                    <Rating value="4.3" />
+                                                    <Rating value={ isNaN(ratingOverall(key, index, product.rating)) ? 0 : ratingOverall(key, index, product.rating)} />
                                                     &nbsp;&nbsp;
                                                     <span
                                                         style={{
@@ -68,7 +82,7 @@ const ProductStore = (props) => {
                                                             fontSize: "12px",
                                                         }}
                                                     >
-                                                        (3353)
+                                                        {`(${sum(product.rating)})`}
                                                     </span>
                                                 </div>
                                                 <Price value={product.price} />

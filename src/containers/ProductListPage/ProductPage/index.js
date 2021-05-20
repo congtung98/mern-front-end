@@ -27,6 +27,10 @@ const ProductPage = (props) => {
             <h3>{page.title}</h3>
             <Carousel
                 renderThumbs={() => {}}
+                infiniteLoop={true}
+                autoPlay={true}
+                renderIndicator={false}
+                showStatus={false}
             >
                 {
                     page.banners && page.banners.map((banner, index) =>

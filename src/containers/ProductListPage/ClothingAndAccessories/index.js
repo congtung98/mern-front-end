@@ -12,7 +12,6 @@ const ClothingAndAccessories = (props) => {
     const searchProduct = useSelector((state) => state.product.productsSearch);
     const dispatch = useDispatch();
     const location = useLocation();
-    console.log(location, 'LOCATION');
 
     useEffect(() => {
         const { match } = props;
@@ -53,6 +52,10 @@ const ClothingAndAccessories = (props) => {
                 </Card>  
                 </div>
             )   
+        }else if(product.loading){
+            return (                     
+                <h1>...Loading</h1>
+            )
         }else{
             return (    
                 <div className="bodyContainer">                       
