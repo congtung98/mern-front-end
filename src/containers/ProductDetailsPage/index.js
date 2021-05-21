@@ -482,12 +482,19 @@ const ProductDetailsPage = (props) => {
               <span className="ratingCount">{isNaN(ratingOverall(product.productDetails.rating)) ? 0 : ratingOverall(product.productDetails.rating)}<IoIosStar /></span>
               <span className="ratingNumbersReviews">{sum(rating)} Ratings & {reviews.length} Reviews</span>
             </div>
-            <div className="extraOffer">Extra {calculateOffer(product.productDetails.price, product.productDetails.offer)}đ off </div>
+            {
+              product.productDetails.offer ? <div className="extraOffer">Extra {calculateOffer(product.productDetails.price, product.productDetails.offer)}đ off </div> : null
+            }
             <div className="flexRow priceContainer">
               <span className="price"><u>đ</u>{product.productDetails.offer ? product.productDetails.price - calculateOffer(product.productDetails.price, product.productDetails.offer) : product.productDetails.price}</span>
-              {product.productDetails.offer ? <span className="originPrice">đ{product.productDetails.price}</span> : null}
-              <span className="discount" style={{ margin: '0 10px' }}>{product.productDetails.offer}% off</span>
-              {/* <span>i</span> */}
+              {
+                product.productDetails.offer ? 
+                <>
+                  <span className="originPrice">đ{product.productDetails.price}</span> 
+                  <span className="discount" style={{ margin: '0 10px' }}>{product.productDetails.offer}% off</span>
+                </>
+                : null
+              }
               </div>
             <div>
               <p style={{ 

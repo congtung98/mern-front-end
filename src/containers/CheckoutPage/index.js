@@ -7,6 +7,7 @@ import Card from '../../components/UI/Card';
 import { addOrder, getAddress, getCartItems } from '../../redux/actions';
 import CartPage from '../CartPage';
 import AddressForm from './AddressForm';
+import StripeContainer from './Payment/StripeContainer';
 import './style.css';
 
 const CheckoutStep = (props) => {
@@ -119,6 +120,7 @@ const CheckoutPage = (props) => {
     const [orderSummary, setOrderSummary] = useState(false);
     const [orderConfirmation, setOrderConfirmation] = useState(false);
     const [paymentOption, setPaymentOption] = useState(false);
+    const [paymentVisa, setPaymentVisa] = useState(false);
     const [confirmOrder, setConfirmOrder] = useState(false);
     const dispatch = useDispatch();
 
@@ -361,20 +363,36 @@ console.log({newAddress});
                                     className="flexRow"
                                     style={{
                                         alignItems: "center",
-                                        padding: "20px",
+                                        padding: "20px 0 10px 0",
                                     }}
                                 >
-                                    <input type="radio" name="paymentOption" value="cod" />
+                                    <input type="radio" name="paymentOption" value="cod" onClick={() => setPaymentVisa(false)} />
                                     <div>Cash on delivery</div>
                                 </div>
-                                <MaterialButton
-                                    title="CONFIRM ORDER"
-                                    onClick={onConfirmOrder}
+                                <div 
+                                    className="flexRow"
                                     style={{
-                                        width: "200px",
-                                        margin: "0 0 20px 20px"
+                                        alignItems: "center",
+                                        padding: "10px 0 20px 0",
                                     }}
-                                />
+                                >
+                                    <input type="radio" name="paymentOption" value="visa" onClick={() => setPaymentVisa(true)} />
+                                    <div>VISA payment</div>
+                                </div>
+                                {
+                                    paymentVisa ? 
+                                    <StripeContainer/> 
+                                    :  
+                                    <MaterialButton
+                                        title="CONFIRM ORDER"
+                                        onClick={onConfirmOrder}
+                                        style={{
+                                            width: "200px",
+                                            margin: "20px 0 20px 15px"
+                                        }}
+                                    />
+                                }
+                               
                             </div>
                         }
                     />
