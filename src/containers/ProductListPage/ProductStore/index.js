@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductsBySlug } from '../../../redux/actions/product.actions';
 import { generatePublicUrl } from '../../../urlConfig';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Card from '../../../components/UI/Card';
 import Rating from '../../../components/UI/Rating';
 import Price from '../../../components/UI/Price';
@@ -13,9 +13,11 @@ const ProductStore = (props) => {
     const product = useSelector(state => state.product);
     const priceRange = product.priceRange;
     const dispatch = useDispatch();
+    const history = useHistory();
     
     useEffect(() => {
         const { match } = props;
+        console.log(match, 'match');
         dispatch(getProductsBySlug(match.params.slug));
     }, []);
 
@@ -31,7 +33,15 @@ const ProductStore = (props) => {
 
     const ratingOverall = (key, index, rating) => {
         return ((rating[1] + rating[2]*2 + rating[3]*3 + rating[4]*4 + rating[5]*5) / sum(product.productsByPrice[key][index].rating)).toFixed(1);
-      }
+    }
+
+    const calculateOffer = (price, offer) => {
+        return price*offer/100;
+    }
+
+    const viewAllProducts = () => {
+       history.push(`/${props.match.params.slug}${props.location.search}`)
+    }
 
     return (
         <>
@@ -48,6 +58,7 @@ const ProductStore = (props) => {
                                     }}
                                     bgColor="#2874f0"
                                     fontSize="12px"
+                                    onClick={viewAllProducts}
                                 />
                             }
                             style={{
@@ -57,7 +68,7 @@ const ProductStore = (props) => {
                         >
                             <div style={{ display: 'flex' }}>
                                 {
-                                    product.productsByPrice[key].map((product, index) =>
+                                    product.productsByPrice[key].slice(0,6).map((product, index) =>
                                         <Link 
                                             to={`/${product.slug}/${product._id}/p/${product.type}`}
                                             style={{
@@ -85,7 +96,17 @@ const ProductStore = (props) => {
                                                         {`(${sum(product.rating)})`}
                                                     </span>
                                                 </div>
-                                                <Price value={product.price} />
+                                                <div className="flexRow" style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Price value={product.offer ? product.price - calculateOffer(product.price, product.offer) : product.price} />
+                                                    {
+                                                        product.offer ? 
+                                                        <>
+                                                        <span className="originPrice">đ{product.price}</span> 
+                                                        <span className="flexRow discount" style={{ margin: '0 10px', alignItems: 'center' }}>{product.offer}% off</span>
+                                                        </>
+                                                        : null
+                                                    }
+                                                </div>
                                             </div>
                                         </Link>
                                     )

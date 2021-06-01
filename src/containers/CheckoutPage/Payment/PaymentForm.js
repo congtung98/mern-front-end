@@ -23,7 +23,8 @@ const CARD_OPTIONS = {
     }
 }
 
-export default function PaymentForm() {
+export default function PaymentForm(props) {
+    const { onConfirmOrder, totalPrice } = props;
     const [success, setSuccess] = useState(false);
     const stripe = useStripe();
     const elements = useElements();
@@ -40,13 +41,14 @@ export default function PaymentForm() {
             try {
                 const {id} = paymentMethod
                 const response = await axios.post("paymentOrder", {
-                    amount: 100000,
+                    amount: totalPrice,
                     id
                 })
 
                 if(response.data.success){
                     console.log("Successful Payment");
                     setSuccess(true);
+                    onConfirmOrder();
                 }
 
             } catch (error) {
@@ -70,7 +72,7 @@ export default function PaymentForm() {
         </form>    
         :
         <div>
-            <h2>You just bought something!</h2>
+            <h2>Successful payment!</h2>
         </div>
         }
         </>

@@ -6,10 +6,11 @@ const PUBLIC_KEY = 'pk_test_51It8V8CyrW0u6wi2YKxWmlXBcpkjUQmbAjHvg8KfYnyRMbUbitw
 
 const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
-export default function StripeContainer() {
+export default function StripeContainer(props) {
+    const { onConfirmOrder, totalPrice } = props;
     return (
         <Elements stripe={stripeTestPromise}>
-            <PaymentForm />
+            <PaymentForm onConfirmOrder={onConfirmOrder} totalPrice={totalPrice} />
         </Elements>
     )
 }

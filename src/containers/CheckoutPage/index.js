@@ -9,6 +9,7 @@ import CartPage from '../CartPage';
 import AddressForm from './AddressForm';
 import StripeContainer from './Payment/StripeContainer';
 import './style.css';
+import Purchase from '../../images/purchase.png'
 
 const CheckoutStep = (props) => {
     return (
@@ -86,23 +87,6 @@ const Address = ({
                         onCancel={() => {}}
                     />
                 )}
-                {/* <div>
-                    <div>
-                        <span>{adr.name}</span>
-                        <span>{adr.addressType}</span>
-                        <span>{adr.mobileNumber}</span>
-                    </div>
-                    <div>
-                        {adr.address}
-                    </div>
-                    <MaterialButton
-                        title="DELIVERY HERE"
-                        style={{
-                            width: '250px'
-                        }}
-                    />
-                </div>
-                <div>Edit</div> */}
             </div>
         </div>
     )
@@ -255,9 +239,14 @@ const CheckoutPage = (props) => {
     if(confirmOrder){
         return (
             <Layout>
-                <Card>
-                    <div>Thank you!</div>
-                </Card>
+                <div style={{ margin: 0, padding: 0, minHeight: '100vh', backgroundColor: '#fff' }}>                       
+                    <div className="container">
+                        <h2>Thank you for buying us!</h2>
+                        <img style={{ width: 285, height: 219 }} src={Purchase} alt=""/>
+                        <p>Your order will be shipped shortly.</p>
+                        <a href="/">Continue shopping</a>
+                    </div>
+                </div> 
             </Layout>
         );
     }
@@ -381,7 +370,10 @@ console.log({newAddress});
                                 </div>
                                 {
                                     paymentVisa ? 
-                                    <StripeContainer/> 
+                                    <StripeContainer onConfirmOrder={onConfirmOrder} totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
+                                        const { price, qty } = cart.cartItems[key];
+                                        return totalPrice + price * qty;
+                                    }, 0)}/> 
                                     :  
                                     <MaterialButton
                                         title="CONFIRM ORDER"
