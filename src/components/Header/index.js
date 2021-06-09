@@ -177,7 +177,7 @@ const Header = (props) => {
         }}
       >
         <div className="authContainer">
-          <div className="row">
+          <div className="rowHeader">
             <div className="leftspace">
               <h2>Login</h2>
               <p>Get access to your Orders, Wishlist and Recommendations</p>

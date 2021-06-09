@@ -4,6 +4,7 @@ const initialState = {
     products: [],
     priceRange: {},
     productsByPrice: {},
+    productsVariants: [],
     pageRequest: false,
     page: {},
     error: null,
@@ -19,6 +20,7 @@ export default (state = initialState, action) => {
             state = {
                 ...state,
                 products: action.payload.products,
+                productsVariants: action.payload.variants,
                 priceRange: action.payload.priceRange,
                 productsByPrice: {
                     ...action.payload.productsByPrice

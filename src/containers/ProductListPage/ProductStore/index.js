@@ -40,7 +40,7 @@ const ProductStore = (props) => {
     }
 
     const viewAllProducts = () => {
-       history.push(`/${props.match.params.slug}${props.location.search}`)
+       history.push(`/${props.match.params.slug}${props.location.search}/undefined`)
     }
 
     return (

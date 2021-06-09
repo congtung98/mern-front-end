@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../../components/Layout';
+import Card from '../../components/UI/Card';
 import getQueryParams from '../../utils/getQueryParams';
 import ClothingAndAccessories from './ClothingAndAccessories';
 import ProductPage from './ProductPage';

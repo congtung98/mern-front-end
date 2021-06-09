@@ -79,14 +79,14 @@
     background: #fff;
     text-align: center;
     line-height: 30px;
-    color: #2874f0;
+    color: #2874f0 !important;
     font-weight: 500;
     font-size: 16px;
     cursor: pointer;
   }
 .more, .fullName {
     font-weight: bold;
-    color: #fff;
+    color: #fff !important;
     display: flex;
     align-items: center;
     margin: 0 20px;
@@ -110,7 +110,7 @@
   max-width: 750px;
   min-width: 650px;
 }
-.row{
+.rowHeader{
   width: 100%;
   display: flex;
   flex-flow: row wrap;
