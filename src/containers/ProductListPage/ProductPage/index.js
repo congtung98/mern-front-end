@@ -5,22 +5,27 @@ import { getProductPage } from '../../../redux/actions';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import Card from '../../../components/UI/Card';
+import { useHistory } from 'react-router';
 
 const ProductPage = (props) => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const product = useSelector(state => state.product);
     const { page } = product;
 
     useEffect(() => {
         const params = getQueryParams(props.location.search);
-        console.log({params});
         const payload = {
             params
         }
 
         dispatch(getProductPage(payload));
     }, []);
+
+    const viewAllProducts = () => {
+        history.push(`/${props.match.params.slug}${props.location.search}/undefined`)
+    }
 
     return (
         <div style={{ margin: '0 10px' }}>
@@ -38,13 +43,14 @@ const ProductPage = (props) => {
                             key={index}
                             style={{ display: 'block' }}
                             href={banner.navigateTo}
+                            // onClick={viewAllProducts}
                         >
                             <img src={banner.img} width="1409px"  alt=""/>
                         </a>
                     )
                 }
             </Carousel>
-            <div style={{
+            {/* <div style={{
                 display: 'flex',
                 justifyContent: 'center',
                 flexWrap: 'wrap',
@@ -67,7 +73,7 @@ const ProductPage = (props) => {
                         </Card>
                     )
                 }
-            </div>
+            </div> */}
         </div>
     )
 }

@@ -58,6 +58,27 @@ export const addAddress = (payload) => {
     }
 }
 
+export const deleteAddress = (payload) => {
+    return async dispatch => {
+        try{
+            const res = await axios.post(`/user/deleteaddress`, { payload: payload });
+            dispatch({ type: userConstants.DELETE_USER_ADDRESS_REQUEST });
+            if(res.status === 202){
+                dispatch({ type: userConstants.DELETE_USER_ADDRESS_SUCCESS });
+                dispatch(getAddress());
+            }else{
+                const { error } = res.data;
+                dispatch({
+                    type: userConstants.DELETE_USER_ADDRESS_FAILURE,
+                    payload: { error }
+                });
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+}
+
 export const addOrder = (payload) => {
     return async dispatch => {
         try{

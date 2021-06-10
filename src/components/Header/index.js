@@ -33,7 +33,6 @@ const Header = (props) => {
   const history = useHistory();
 
   const cart = useSelector((state) => state.cart);
-  console.log(props, 'PROPS');
 
   const userSignup = () => {
     const user = { firstName, lastName, email, password };

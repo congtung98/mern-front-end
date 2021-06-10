@@ -50,6 +50,25 @@ export default (state = initialState, action) => {
                 error: action.payload.error
             }
             break;
+        case userConstants.DELETE_USER_ADDRESS_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case userConstants.DELETE_USER_ADDRESS_SUCCESS:
+            state = {
+                ...state,
+                loading: false
+            }
+            break;
+        case userConstants.DELETE_USER_ADDRESS_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;
         case userConstants.GET_USER_ORDER_REQUEST:
             state = {
                 ...state,

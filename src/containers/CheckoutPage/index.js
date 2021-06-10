@@ -4,7 +4,7 @@ import Layout from '../../components/Layout';
 import { Anchor, MaterialButton, MaterialInput } from '../../components/MaterialUI';
 import PriceDetails from '../../components/PriceDetails';
 import Card from '../../components/UI/Card';
-import { addOrder, getAddress, getCartItems } from '../../redux/actions';
+import { addOrder, deleteAddress, getAddress, getCartItems } from '../../redux/actions';
 import CartPage from '../CartPage';
 import AddressForm from './AddressForm';
 import StripeContainer from './Payment/StripeContainer';
@@ -32,6 +32,7 @@ const Address = ({
     confirmDeliveryAddress,
     onAddressSubmit
 }) => {
+    const dispatch = useDispatch();
     return (
         <div className="flexRow addressContainer">
             <div>
@@ -54,14 +55,27 @@ const Address = ({
                                 </span>
                             </div>
                             {adr.selected && (
-                                <Anchor
-                                    name="EDIT"
-                                    onClick={() => enableAddressEditForm(adr)}
-                                    style={{
-                                        fontWeight: "500",
-                                        color: "#2874f0"
-                                    }}
-                                />
+                                <div>
+                                    <Anchor
+                                        name="EDIT"
+                                        onClick={() => enableAddressEditForm(adr)}
+                                        style={{
+                                            fontWeight: "500",
+                                            color: "#2874f0"
+                                        }}
+                                    />
+                                    <Anchor
+                                        name="DELETE"
+                                        onClick={() => {
+                                            const payload = { address: { _id: adr._id } };
+                                            dispatch(deleteAddress(payload));
+                                        }}
+                                        style={{
+                                            fontWeight: "500",
+                                            color: "#2874f0"
+                                        }}
+                                    />
+                                </div>
                             )}
                         </div>
                         <div className="fullAddress">
@@ -109,7 +123,6 @@ const CheckoutPage = (props) => {
     const dispatch = useDispatch();
 
     const onAddressSubmit = (addr) => {
-        console.log('OKKOO');
         setSelectedAddress(addr);
         setConfirmAddress(true);
         setOrderSummary(true);
@@ -216,7 +229,6 @@ const CheckoutPage = (props) => {
             paymentType: "cod",
         };
 
-        console.log(payload);
         dispatch(addOrder(payload));
         setConfirmOrder(true);
     };

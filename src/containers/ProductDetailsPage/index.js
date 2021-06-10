@@ -116,7 +116,6 @@ const ProductDetailsPage = (props) => {
   }, [product.productDetails])
 
   const formatText = (text) => {
-    console.log(text, 'ok');
     let upperCaseText = text.toString().charAt(0).toUpperCase() + text.slice(1);
     if(upperCaseText.match(/[A-Z][a-z]+|[0-9]+/g)){
       return upperCaseText.match(/[A-Z][a-z]+|[0-9]+/g).join(" ")
@@ -222,7 +221,6 @@ const ProductDetailsPage = (props) => {
   const setVariantProduct = (e, key, v) => {
     if(keys.length > 0 && keys.some(e => e.value === v)){
       let _keys = keys.filter(k => k.value !== v); ;
-      console.log(_keys, 'key');
       setKeys(_keys);
       e.target.classList.remove("variantSelected")
       let _variants = variants;

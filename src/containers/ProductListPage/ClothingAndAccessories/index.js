@@ -142,7 +142,6 @@ const ClothingAndAccessories = (props) => {
 
     const sortAlphaNum = (a, b) => a.localeCompare(b, 'en', { numeric: true })
     const mergedVariants = [].concat.apply([], productsVariants);
-    console.log(mergedVariants);
     const colors = mergedVariants.map(v => v.color);
     const ram = mergedVariants.map(v => v.ram);
     const storage = mergedVariants.map(v => v.storage);

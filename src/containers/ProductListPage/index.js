@@ -10,7 +10,6 @@ import './style.css';
 const ProductListPage = (props) => {
 
     const renderProduct = () => {
-        console.log(props);
         const params = getQueryParams(props.location.search);
         let content = null;
         switch(params.type){
