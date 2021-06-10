@@ -7,6 +7,7 @@ import Card from '../../../components/UI/Card';
 import Rating from '../../../components/UI/Rating';
 import Price from '../../../components/UI/Price';
 import { MaterialButton } from '../../../components/MaterialUI';
+import { calculateOffer, sum } from '../../../helpers';
 
 const ProductStore = (props) => {
 
@@ -21,23 +22,11 @@ const ProductStore = (props) => {
         dispatch(getProductsBySlug(match.params.slug));
     }, []);
 
-    const sum = ( obj ) => {
-        var sum = 0;
-        for( var el in obj ) {
-          if( obj.hasOwnProperty( el ) ) {
-            sum += parseFloat( obj[el] );
-          }
-        }
-        return sum;
-    }
 
     const ratingOverall = (key, index, rating) => {
         return ((rating[1] + rating[2]*2 + rating[3]*3 + rating[4]*4 + rating[5]*5) / sum(product.productsByPrice[key][index].rating)).toFixed(1);
     }
 
-    const calculateOffer = (price, offer) => {
-        return price*offer/100;
-    }
 
     const viewAllProducts = () => {
        history.push(`/${props.match.params.slug}${props.location.search}/undefined`)

@@ -111,3 +111,23 @@ export const searchProduct = (payload) => {
         }
     }
 } 
+
+export const getBestOfferProducts = () => {
+    return async dispatch => {
+        let res;
+        dispatch({ type: productConstants.GET_BEST_OFFER_PRODUCTS_REQUEST});
+        try {
+            res = await axios.get(`/product/bestDeal`);
+            dispatch({
+                type: productConstants.GET_BEST_OFFER_PRODUCTS_SUCCESS,
+                payload: { products: res.data.response }
+            });
+        }catch(error){
+            console.log(error);
+            dispatch({
+                type: productConstants.GET_BEST_OFFER_PRODUCTS_FAILURE,
+                payload: { error: res.data.error || res.data.message }
+            })
+        }
+    }
+}
