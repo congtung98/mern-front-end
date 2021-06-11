@@ -8,6 +8,7 @@ import { addToCart, checkLoginModal, getCartItems, removeCartItem } from '../../
 import './style.css';
 import { MaterialButton } from '../../components/MaterialUI';
 import PriceDetails from '../../components/PriceDetails';
+import CartImage from '../../images/cart-items.png';
 
 const CartPage = (props) => {
 
@@ -71,54 +72,80 @@ const CartPage = (props) => {
             </>
         )
     }
+    if(!auth.authenticate){
+        return (
+            <Layout>
+                <div className="cartContainer" style={{ alignItems: 'flex-start' }}>
+                        <Card
+                            headerLeft={`My Cart`}
+                        >
+                            <div className="cartNotLogin">
+                                <img style={{ height: 162 }} src={CartImage} alt="" />
+                                <div style={{ fontSize: 18, marginTop: 24 }}>Missing Cart items?</div>
+                                <div style={{ fontSize: 12, marginTop: 10 }}>Login to see the items you added previously</div>
+                                <button className="cartLogin" onClick={() => dispatch(checkLoginModal(true))}>Login</button>
+                            </div>
+                        </Card>
+                </div>
+            </Layout>
+        )
+    }
 
     return (
         <Layout>
-            <div className="cartContainer" style={{ alignItems: 'flex-start' }}>
-                <Card
-                    headerLeft={`My Cart`}
-                    headerRight={<div>Deliver to</div>}
-                    style={{ width: 'calc(100% - 400px', overflow: 'hidden'}}
-                >
-                    {
-                        Object.keys(cartItems).map((key, index) => 
-                            <CartItem 
-                                key={index}
-                                cartItem={cartItems[key]}
-                                onQuantityInc={onQuantityIncrement}
-                                onQuantityDec={onQuantityDecrement}
-                                onRemoveCartItem={onRemoveCartItem}
-                            />
-                        )
-                    }
-
-                    <div style={{
-                        width: '100%',
-                        display: 'flex',
-                        background: '#fff',
-                        justifyContent: 'flex-end',
-                        boxShadow: '0 0 10px 10px #eee',
-                        boxSizing: 'border-box'
-                    }}>
-                        <div style={{ width: '250px' }}>
-                            <MaterialButton
-                                title="PLACE ORDER" 
-                                onClick={() => auth.authenticate ? props.history.push('/checkout') : dispatch(checkLoginModal(true))}
-                            />
-                        </div>
-                    </div>
-                    
-                </Card>
-                <PriceDetails
-                    totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {
-                        return qty + cart.cartItems[key].qty;
-                    }, 0)}
-                    totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
-                        const { price, qty } = cart.cartItems[key];
-                        return totalPrice + price * qty;
-                    }, 0)}
-                />
-            </div>
+                {
+                    Object.keys(cartItems).length > 0 ?
+                    <div className="cartContainer" style={{ alignItems: 'flex-start' }}>
+                        <Card
+                            headerLeft={`My Cart`}
+                            headerRight={<div>Deliver to</div>}
+                            style={{ width: 'calc(100% - 400px', overflow: 'hidden'}}
+                        >
+                            {
+                                Object.keys(cartItems).map((key, index) => 
+                                    <CartItem 
+                                        key={index}
+                                        cartItem={cartItems[key]}
+                                        onQuantityInc={onQuantityIncrement}
+                                        onQuantityDec={onQuantityDecrement}
+                                        onRemoveCartItem={onRemoveCartItem}
+                                    />
+                                )
+                            }
+        
+                            <div style={{
+                                width: '100%',
+                                display: 'flex',
+                                background: '#fff',
+                                justifyContent: 'flex-end',
+                                boxShadow: '0 0 10px 10px #eee',
+                                boxSizing: 'border-box'
+                            }}>
+                                <div style={{ width: '250px' }}>
+                                    <MaterialButton
+                                        title="PLACE ORDER" 
+                                        onClick={() => auth.authenticate ? props.history.push('/checkout') : dispatch(checkLoginModal(true))}
+                                    />
+                                </div>
+                            </div>
+                            
+                        </Card>
+                        <PriceDetails
+                            totalItem={Object.keys(cart.cartItems).reduce(function (qty, key) {
+                                return qty + cart.cartItems[key].qty;
+                            }, 0)}
+                            totalPrice={Object.keys(cart.cartItems).reduce((totalPrice, key) => {
+                                const { price, qty } = cart.cartItems[key];
+                                return totalPrice + price * qty;
+                            }, 0)}
+                        />
+                    </div>:                    
+                    <div className="container">
+                        <h2>You don't have any items in your cart</h2>
+                        <p>Please go back and continue shopping.</p>
+                        <a href="/">Go back home</a>
+                    </div>      
+                }
         </Layout>
     )
 }

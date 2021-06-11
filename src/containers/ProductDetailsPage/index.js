@@ -269,6 +269,29 @@ const ProductDetailsPage = (props) => {
     return price*offer/100;
   }
 
+  const handleAddToCart = (buyNow) => {
+    let count = 0;
+    Object.keys(variant).forEach(v => {
+      if(variant[v].length > 1){
+        count++;
+      }
+    });
+    if(productVariant.length !== 1 && variants.length > 1 || count > keys.length){
+      setAlertCart(true);
+    }else if(productVariant.length === 1 || variants.length === 1){
+      const { _id, name, price, type } = product.productDetails;
+      const variantId = productVariant[0] ?  productVariant[0]._id : variants[0]._id;
+      const img = product.productDetails.productPictures[0].img;
+      dispatch(addToCart({ _id, name, price, img, type, variantId }, 1));
+      buyNow && props.history.push(`/cart`);
+    }else{
+      const { _id, name, price } = product.productDetails;
+      const img = product.productDetails.productPictures[0].img;
+      dispatch(addToCart({ _id, name, price, img }, 1));
+      buyNow && props.history.push(`/cart`);
+    }
+  }
+
   if(Object.keys(product.productDetails).length === 0){
     return null;
   }
@@ -419,29 +442,7 @@ const ProductDetailsPage = (props) => {
                   marginRight: '5px'
                 }}
                 icon={<IoMdCart />}
-                onClick={() => {
-                  let count = 0;
-                  Object.keys(variant).forEach(v => {
-                    if(variant[v].length > 1){
-                      count++;
-                    }
-                  });
-                  if(productVariant.length !== 1 && variants.length > 1 || count > keys.length){
-                    setAlertCart(true);
-                  }else if(productVariant.length === 1 || variants.length === 1){
-                    console.log(productVariant, variants, 'LOGGGG');
-                    const { _id, name, price, type } = product.productDetails;
-                    const variantId = productVariant[0] ?  productVariant[0]._id : variants[0]._id;
-                    const img = product.productDetails.productPictures[0].img;
-                    dispatch(addToCart({ _id, name, price, img, type, variantId }));
-                    props.history.push(`/cart`);
-                  }else{
-                    const { _id, name, price } = product.productDetails;
-                    const img = product.productDetails.productPictures[0].img;
-                    dispatch(addToCart({ _id, name, price, img }));
-                    props.history.push(`/cart`);
-                  }
-                }}
+                onClick={() => handleAddToCart(false)}
               />
               <MaterialButton
                 title="BUY NOW"
@@ -451,6 +452,7 @@ const ProductDetailsPage = (props) => {
                   marginLeft: '5px'
                 }}
                 icon={<AiFillThunderbolt />}
+                onClick={() => handleAddToCart(true)}
               />
             </div>
           </div>

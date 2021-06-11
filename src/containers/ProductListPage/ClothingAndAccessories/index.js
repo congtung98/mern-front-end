@@ -6,6 +6,7 @@ import ItemRange from '../../../components/UI/ItemRange';
 import { getProductsBySlug } from '../../../redux/actions';
 import { generatePublicUrl } from '../../../urlConfig';
 import FilterItem from './FilterItem';
+import Soldout from '../../../images/sold_out.png';
 
 import "./style.css";
 
@@ -403,6 +404,10 @@ const ClothingAndAccessories = (props) => {
                                 className="caImgContainer"
                                 to={`/${product.slug}/${product._id}/p/${product.type}`}
                                 >
+                                    {
+                                        product.quantity === 0 ?
+                                        <img src={Soldout} alt="soldout" style={{ position: 'absolute', left: 0, top: '35%' }} /> : null
+                                    }
                                     <img src={generatePublicUrl(product.productPictures[0].img)} alt="productimage"/>
                                 </Link>
                                 <div>

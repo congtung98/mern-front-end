@@ -31,7 +31,7 @@ export const addToCart = (product, newQty) => {
             },
             auth } = store.getState();
 
-            console.log(cartItems[variantId], cartItems[product._id]);
+            console.log(cartItems[variantId], cartItems[product._id], 'va k');
             let qty;
             if(cartItems[variantId]){
                 qty = parseInt(cartItems[variantId].qty) + newQty;
