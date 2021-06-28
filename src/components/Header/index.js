@@ -127,7 +127,7 @@ const Header = (props) => {
             }
             menus={[
             { label: 'My Profile', href: '', icon: null },
-            { label: 'Flipkart Plus Zone', href: '', icon: null },
+            // { label: 'Flipkart Plus Zone', href: '', icon: null },
             { 
                 label: 'Orders', 
                 href: `/account/orders`, 
@@ -136,9 +136,9 @@ const Header = (props) => {
                     !auth.authenticate && dispatch(checkLoginModal(true));
                 } 
             },
-            { label: 'Wishlist', href: '', icon: null },
-            { label: 'Rewards', href: '', icon: null },
-            { label: 'Gift Cards', href: '', icon: null },
+            // { label: 'Wishlist', href: '', icon: null },
+            // { label: 'Rewards', href: '', icon: null },
+            // { label: 'Gift Cards', href: '', icon: null },
             ]}
             firstMenu={
             <div className="firstmenu">
@@ -227,7 +227,7 @@ const Header = (props) => {
                     onClick={userLogin}
                     />
 
-                    <p style={{ textAlign: 'center' }}>OR</p>
+                    {/* <p style={{ textAlign: 'center' }}>OR</p>
 
                     <MaterialButton 
                     title="Request OTP"
@@ -236,7 +236,7 @@ const Header = (props) => {
                     style={{
                         margin: '20px 0'
                     }}
-                    />
+                    /> */}
                 </div>
             </div>
           </div>

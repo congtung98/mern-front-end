@@ -18,6 +18,7 @@ import { generatePublicUrl } from '../../urlConfig';
 import { addToCart } from '../../redux/actions';
 import ReviewItem from './ReviewItem';
 import { megaPixels, inches, kilograms } from './constant';
+import Soldout from '../../images/sold_out.png';
 
 
 /**
@@ -395,7 +396,7 @@ const ProductDetailsPage = (props) => {
       >
         <div className="reviewSuccessModal">
           <div className="reviewHeader">Alert</div>
-          <div style={{ marginBottom: 50 }}>You must choose all variant to continue add to cart!</div>
+          <div style={{ marginBottom: 50 }}>{product.productDetails.quantity > 0 ? 'You must choose all variant to continue add to cart!' : 'This product is out of stock!'}</div>
           <div className="flexRow" style={{ justifyContent: 'center' }}>
             <MaterialButton 
               title="OK"
@@ -429,6 +430,10 @@ const ProductDetailsPage = (props) => {
           </div>
           <div className="productDescContainer">
             <div className="productDescImgContainer">
+            {
+                product.productDetails.quantity === 0 ?
+                <img src={Soldout} alt="soldout" style={{ position: 'absolute', left: 67, top: '30%', width: 485 }} /> : null
+            }
               <img src={generatePublicUrl( imgSrc || product.productDetails.productPictures[0].img )} alt={`${product.productDetails.productPictures[0].img}`} />
             </div>
 
@@ -442,7 +447,11 @@ const ProductDetailsPage = (props) => {
                   marginRight: '5px'
                 }}
                 icon={<IoMdCart />}
-                onClick={() => handleAddToCart(false)}
+                onClick={() => {
+                  product.productDetails.quantity > 0 ? 
+                  handleAddToCart(false) : 
+                  setAlertCart(true)
+                }}
               />
               <MaterialButton
                 title="BUY NOW"
@@ -452,7 +461,11 @@ const ProductDetailsPage = (props) => {
                   marginLeft: '5px'
                 }}
                 icon={<AiFillThunderbolt />}
-                onClick={() => handleAddToCart(true)}
+                onClick={() => {
+                  product.productDetails.quantity > 0 ? 
+                  handleAddToCart(true) : 
+                  setAlertCart(true)
+                }}
               />
             </div>
           </div>

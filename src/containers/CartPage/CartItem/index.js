@@ -69,7 +69,7 @@ const CartItem = (props) => {
                             {ram ? ` (${ram} RAM)` : null}
                             {screenSize ? ` (${screenSize} inch)` : null}
                         </p>
-                        <p>Rs. {price}</p>
+                        <p>{price} VND</p>
                     </div>
                     <div>Delivery in 3 - 5 days</div>
                 </div>
